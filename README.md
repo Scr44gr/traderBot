@@ -1,0 +1,2 @@
+# traderBot
+Binance trading bot.
