@@ -1,4 +1,4 @@
-from typing import AnyStr, Dict, Optional,
+from typing import AnyStr, Dict, List, Optional,
 from binance import Client
 from binance.enums import SIDE_BUY, SIDE_SELL
 
@@ -27,7 +27,7 @@ class BinanceClient:
         if kwargs.pop('test_order'):
             return self.__create_test_order(symbol=symbol, side=SIDE_BUY, order_type=order_type, quantity=quantity, price=price)
 
-        return self.__create_order(symbol=symbol, side='BUY', ord_type=order_type, price=price, **kwargs)
+        return self.__create_order(symbol=symbol, side=SIDE_BUY, ord_type=order_type, price=price, **kwargs)
 
     def create_sell_order(self, **kwargs) -> Dict:
         """
@@ -54,6 +54,22 @@ class BinanceClient:
 
         return self._api.create_order(symbol=symbol, side=side, type=ord_type, quantity=quantity, price=price, **kwargs)
     
-    def __create_test_order(self):
+    def __create_test_order(self, symbol, side, ord_type, quantity, price, **kwargs) -> Dict:
         
-        pass
+        return self._api.create_test_order(symbol=symbol, side=side, type=ord_type, quantity=quantity, price=price, **kwargs)
+    
+    def get_bids_price(self, symbol):
+
+        return float(self._api.get_order_book(symbol)['bids'][0][0])
+    
+    def get_asks_price(self, symbol):
+        
+        return float(self._api.get_order_book(symbol)['asks'][0][0])
+    
+    def get_open_orders(self) -> List[Dict]:
+
+        return self._api.get_open_orders()
+    
+    def cancel_order(self, symbol, order_id):
+
+        return self._api.cancel_order(symbol, order_id)
