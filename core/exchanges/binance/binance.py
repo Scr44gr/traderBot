@@ -1,4 +1,4 @@
-from typing import AnyStr, Dict, List, Optional,
+from typing import AnyStr, Dict, List, Optional
 from binance import Client
 from binance.enums import SIDE_BUY, SIDE_SELL
 
