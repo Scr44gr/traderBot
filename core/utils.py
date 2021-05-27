@@ -24,4 +24,5 @@ class EventHanlder:
                 self.handlers[name].append(handler)
             else:
                 self.handlers[name] = [handler]
+            return handler
         return register_event
