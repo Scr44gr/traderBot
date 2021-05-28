@@ -7,7 +7,7 @@ def override(f):
 class EventHandler:
 
     def __init__(self):
-        self.handlers = []
+        self.handlers = {}
         self.__logger = getLogger('EventHandler')
     
     def call_event(self, name):
