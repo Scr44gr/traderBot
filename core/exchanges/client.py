@@ -1,13 +1,17 @@
+from os import getenv
 from typing import AnyStr, List
 from core.exchanges.binance import BinanceClient
 from core.exchanges.strategy import Strategy
-
+from logging import getLogger
+from core.utils import safe_number
 
 class Client(Strategy):
 
     def __init__(self, public_key: AnyStr, secret_key: AnyStr, use_testnet=False) -> None:
         super().__init__()
-
+        
+        self.__logger = getLogger('Client')
+        self.balance = ''
         if (public_key and secret_key) is not None:
             self.client = BinanceClient(public_key, secret_key, use_testnet)
         else:
@@ -79,7 +83,7 @@ class Client(Strategy):
         - symbol <str>
         """
 
-        self._prev_bids_price = self.client.get_bid_price(symbol)
+        self._prev_bids_price = self.client.get_bids_price(symbol)
         return self._prev_bids_price
 
     def get_asks_price(self, symbol: AnyStr) -> float:
@@ -92,7 +96,7 @@ class Client(Strategy):
         - symbol <str>
         """
 
-        self._prev_asks_price = self.client.get_ask_price(symbol)
+        self._prev_asks_price = self.client.get_asks_price(symbol)
         return self._prev_asks_price
 
     def get_open_orders(self) -> List:
