@@ -24,10 +24,10 @@ class BinanceClient:
         quantity = kwargs.pop('quantity')
         price = kwargs.pop('price')
 
-        if kwargs.pop('test_order'):
+        if kwargs.pop('test_order', 0):
             return self.__create_test_order(symbol=symbol, side=SIDE_BUY, order_type=order_type, quantity=quantity, price=price)
 
-        return self.__create_order(symbol=symbol, side=SIDE_BUY, ord_type=order_type, price=price, **kwargs)
+        return self.__create_order(symbol=symbol, side=SIDE_BUY, ord_type=order_type, price=price, quantity=quantity, **kwargs)
 
     def create_sell_order(self, **kwargs) -> Dict:
         """
@@ -45,18 +45,18 @@ class BinanceClient:
         price = kwargs.pop('price')
 
 
-        if kwargs.pop('test_order'):
+        if kwargs.pop('test_order', 0):
             return self.__create_test_order(symbol=symbol, side=SIDE_SELL, order_type=order_type, quantity=quantity, price=price)
 
         return self.__create_order(symbol=symbol, side=SIDE_SELL, ord_type=order_type, price=price, **kwargs)
 
     def __create_order(self, symbol, side, ord_type, quantity, price, **kwargs) -> Dict:
 
-        return self._api.create_order(symbol=symbol, side=side, type=ord_type, quantity=quantity, price=price, **kwargs)
+        return self._api.create_order(symbol=symbol, side=side, type=ord_type, quantity=quantity, price=price, recvWindow=self._get_time_offset(), timeInForce='GTC', **kwargs)
     
     def __create_test_order(self, symbol, side, ord_type, quantity, price, **kwargs) -> Dict:
         
-        return self._api.create_test_order(symbol=symbol, side=side, type=ord_type, quantity=quantity, price=price, **kwargs)
+        return self._api.create_test_order(symbol=symbol, side=side, type=ord_type, quantity=quantity, price=price, recvWindow=self._get_time_offset(), **kwargs)
     
     def get_bids_price(self, symbol):
 
