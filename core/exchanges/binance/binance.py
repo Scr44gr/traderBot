@@ -60,11 +60,11 @@ class BinanceClient:
     
     def get_bids_price(self, symbol):
 
-        return float(self._api.get_order_book(symbol)['bids'][0][0])
+        return float(self._api.get_order_book(symbol=symbol)['bids'][0][0])
     
     def get_asks_price(self, symbol):
         
-        return float(self._api.get_order_book(symbol)['asks'][0][0])
+        return float(self._api.get_order_book(symbol=symbol)['asks'][0][0])
     
     def get_open_orders(self) -> List[Dict]:
         return self._api.get_open_orders(recvWindow=self._get_time_offset())
