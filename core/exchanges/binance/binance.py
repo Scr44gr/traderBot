@@ -1,7 +1,7 @@
 from typing import AnyStr, Dict, List, Optional
 from binance import Client
 from binance.enums import SIDE_BUY, SIDE_SELL
-
+from core.utils import safe_number
 
 class BinanceClient:
 
