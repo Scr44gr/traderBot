@@ -67,12 +67,15 @@ class BinanceClient:
         return float(self._api.get_order_book(symbol)['asks'][0][0])
     
     def get_open_orders(self) -> List[Dict]:
+        return self._api.get_open_orders(recvWindow=self._get_time_offset())
+        
+    def get_current_asset_balance(self, asset : AnyStr) -> Dict:
 
-        return self._api.get_open_orders()
-    
+        return self._api.get_asset_balance(asset, recvWindow=self._get_time_offset())
+
     def cancel_order(self, symbol, order_id):
 
-        return self._api.cancel_order(symbol, order_id)
+        return self._api.cancel_order(symbol, order_id, recvWindow=self._get_time_offset())
     
     def get_klines(self, symbol, interval, limit=500, **kwargs):
 
@@ -93,5 +96,9 @@ class BinanceClient:
             response.append(safe_number(data[i]))
 
         return response
+    
+    def _get_time_offset(self):
+
+        return 60000
 
 
