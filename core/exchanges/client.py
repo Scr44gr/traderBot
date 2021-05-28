@@ -128,3 +128,55 @@ class Client(Strategy):
         """
         
         return self.client.get_klines(symbol, interval, limit, **kwargs)
+    
+    def __get_symbol_info(self, symbol):
+        """Private func to get the symbol info.
+
+        :params:
+        - symbol <str>
+
+        """
+        return self.client._api.get_symbol_info(symbol)
+
+    def clear_open_orders(self, symbol, side):
+        """Check for open orders and cancel it.
+
+        :params:
+        - symbol <str> 
+        - side <str> BUY - SELL
+        """
+        self.__logger.debug('Cleaning open orders..')
+
+        for order in self.get_open_orders():
+            if order['symbol'] == symbol and order['side'] == side:
+                try:
+                    response = self.cancel_order(self.symbol, order['orderId'])
+                    self.__logger.info(f'Order {response["id"]} cancelled')
+                except:
+                    self.__logger.error('An error occurred while trying to cancel the order. details:', exc_info=1)
+    
+    def is_available_balance(self, symbol):
+        """Check in the current balance is available to make an order.
+
+        :params:
+        - symbol <str>
+        """
+        symbol_info = self.__get_symbol_info(symbol)
+        response = self.client.get_current_asset_balance(symbol_info['baseAsset'])
+        balance = response['free']
+        is_available = safe_number(balance) > safe_number(symbol_info['filters'][0]['minPrice'])
+
+        return is_available
+    
+    def to_exact_precision(self, symbol, quantity):
+        """Check the quantity precision and return the exact.
+
+        :params:
+        - symbol <str>
+        - quantity <str|float|int>
+        """
+        symbol_info = self.__get_symbol_info(symbol)
+        lot_size_fix = 3
+        precision = safe_number(symbol_info['baseAssetPrecision']) - lot_size_fix
+
+        return f'{quantity:.{precision}f}'
