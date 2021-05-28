@@ -113,3 +113,18 @@ class Client(Strategy):
 
         """
         return self.client.cancel_order(symbol, order_id)
+    
+    def get_klines(self, symbol, interval, limit, **kwargs):
+        """
+        Get Kline/candlestick bars for a symbol. Klines are uniquely identified by their open time.
+        
+        :params:
+        
+        - symbol <str>
+        - limit <int> default 500, max 1500 for futures, max 1000 for spot markets.
+        - startTime <int> optional
+        - endTime <int> optional
+
+        """
+        
+        return self.client.get_klines(symbol, interval, limit, **kwargs)
