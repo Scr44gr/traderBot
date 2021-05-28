@@ -1,4 +1,3 @@
-from os import getenv
 from typing import AnyStr, List
 from core.exchanges.binance import BinanceClient
 from core.exchanges.strategy import Strategy
