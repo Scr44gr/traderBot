@@ -76,7 +76,11 @@ class Supertrend(Indicator):
     def start(self):
 
         self.__logger.debug('On fetching new candles')
-        candles = self.get_klines(getenv('SYMBOL'), interval='1m', limit=100, parse_data=True)
+        
+        INTERVAL = getenv('INTERVAL', '1m')
+        LIMIT = int(getenv('LIMIT', 100))
+
+        candles = self.get_klines(getenv('SYMBOL'), interval=INTERVAL, limit=LIMIT, parse_data=True)
         dataframe = pd.DataFrame(candles[:-1], columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
         dataframe['timestamp'] = pd.to_datetime(dataframe['timestamp'], unit='ms')
 
