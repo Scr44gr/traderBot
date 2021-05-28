@@ -26,8 +26,11 @@ class EventHandler:
         if name in self.handlers:
             try:
                 for handler in self.handlers[name]:
-                    self._test = True
-                    handler()
+                    try:
+                        self._test = True
+                        handler()
+                    except:
+                        self.__logger.error('An error ocurred in call_event, details:', exc_info=1)
             except:
                 self.__logger.error('on call_event error', exc_info=1)
     
