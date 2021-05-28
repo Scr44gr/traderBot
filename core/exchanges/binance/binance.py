@@ -73,3 +73,25 @@ class BinanceClient:
     def cancel_order(self, symbol, order_id):
 
         return self._api.cancel_order(symbol, order_id)
+    
+    def get_klines(self, symbol, interval, limit=500, **kwargs):
+
+        data = self._api.get_klines(symbol=symbol, interval=interval, limit=limit)
+        if kwargs.pop('parse_data', 0):
+            parsed_data = []
+            for column in data:
+                parsed_data.append(self._parse_klines(column))
+            return parsed_data
+        return data
+
+    @staticmethod
+    def _parse_klines(data):
+
+        response = []
+
+        for i in range(0, 6):
+            response.append(safe_number(data[i]))
+
+        return response
+
+
