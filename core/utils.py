@@ -1,4 +1,5 @@
 from logging import getLogger
+from ast import literal_eval
 
 def override(f):
     return f
