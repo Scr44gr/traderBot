@@ -27,7 +27,8 @@ class EventHandler:
         if name in self.handlers:
             try:
                 for handler in self.handlers[name]:
-                    handler() 
+                    self._test = True
+                    handler()
             except:
                 self.__logger.error('on call_event error', exc_info=1)
     
@@ -39,3 +40,9 @@ class EventHandler:
                 self.handlers[name] = [handler]
             return handler
         return register_event
+    
+    def add_event_handler(self, name, handler):
+        return self.on(name)(handler)
+    
+    def _on_test_event_handler(self):
+        self._test = False
