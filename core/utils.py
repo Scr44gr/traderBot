@@ -14,8 +14,7 @@ def safe_number(number):
                 return float(str_value)
             elif isinstance(literal_eval(str_value), int):
                 return int(str_value)
-    
-    return int(str_value)
+    return number
 
 class EventHandler:
 
