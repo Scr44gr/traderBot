@@ -4,7 +4,7 @@ def override(f):
     return f
 
 
-class EventHanlder:
+class EventHandler:
 
     def __init__(self):
         self.handlers = []
