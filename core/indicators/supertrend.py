@@ -18,7 +18,7 @@ class Supertrend(Indicator):
     def sell_signal(self):
         self.__logger.info('DOWNTREND, SELLING...')
 
-    def indicator(self, dataframe, period=7, atr_multiplier=3):
+    def indicator(self, dataframe, period=int(getenv('PERIOD', 7)), atr_multiplier=int(getenv('ATR_MULTIPLIER', 3))):
         """
         SuperTrend.
         """
@@ -52,6 +52,7 @@ class Supertrend(Indicator):
     
     def check_signal(self, dataframe):
         self.__logger.info("Checking buy/sell signal..")
+        self.__logger.info(dataframe.tail(5))
         
         current = len(dataframe.index) - 1
         previous = current - 1
