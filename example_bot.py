@@ -10,7 +10,7 @@ logging.basicConfig(format='[%(name)s] %(asctime)s - %(message)s', level=logging
 class BotStrategy(Client):
 
     def __init__(self, indicator) -> None:
-        super().__init__(public_key=getenv('PUBLIC_KEY'), secret_key=getenv('SECRET_KEY'), use_testnet=getenv('TESTNET'))
+        super().__init__(public_key=getenv('PUBLIC_KEY'), secret_key=getenv('SECRET_KEY'), use_testnet=int(getenv('TESTNET')))
 
         self.logger = logging.getLogger('Strategy')
         self.symbol = getenv('SYMBOL')
