@@ -165,9 +165,9 @@ class Client(Strategy):
         - symbol <str>
         """
         symbol_info = self.__get_symbol_info(symbol)
-        response = self.client.get_current_asset_balance(symbol_info['baseAsset'])
+        response = self.client.get_current_asset_balance(symbol_info['quoteAsset'])
         balance = response['free']
-        is_available = safe_number(balance) > safe_number(symbol_info['filters'][0]['minPrice'])
+        is_available = safe_number(balance) > 0
 
         return is_available
     
